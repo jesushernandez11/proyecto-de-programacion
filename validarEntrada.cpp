@@ -2,7 +2,20 @@
 #include <stdlib.h>
 #include<ctype.h>
 #include<string.h>
-
+struct pol{
+	int grado;
+	int coef;
+	struct pol *sig;
+};
+typedef struct pol tpuntero;
+typedef tpuntero *ptrNodoLinea;
+struct nodoColumna{
+	ptrNodoLinea linea;
+	struct nodoColumna *sig;
+};
+void mostrarLista(ptrNodoLinea cabeza);
+void insertarGrado(ptrNodoLinea *cabeza, int grado);
+void insertarCoeficiente(ptrNodoLinea *cabeza, float coef);
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 int main(int argc, char *argv[]) {
@@ -39,6 +52,7 @@ do {
 	}while(auxValida !=0);
 	
 	graReal = atoi(grado);
+	insertarGrado(&cabeza, graReal);
 	printf("%d\n", graReal + 10);
 	
 	do 
@@ -62,11 +76,35 @@ do {
 	}while(auxValida != 0);
 	
 	coefReal = atof(coeficiente);
+	insertarCoeficiente(&cabeza, coefReal);
 	printf("%.2f\n", coefReal + 10);
 	
 	printf("Deseas agregar otro termino al polinomio\n1.-Si\n2.-No\n");
 	scanf("%d", &op);
 } while(op==1);
-
+mostrarLista(&cabeza);
 return 0;
+}
+void insertarGrado(ptrNodoLinea *cabeza,int grado){
+	ptrNodoLinea nuevo;
+	nuevo = malloc(sizeof(ptrNodoLinea));
+	nuevo->grado = grado;
+	nuevo->sig = *cabeza;
+	*cabeza = nuevo;
+	printf("Agregado correctamente");
+}
+void insertarCoeficiente(ptrNodoLinea *cabeza, float coef){
+	ptrNodoLinea nuevo;
+	nuevo = malloc(sizeof(ptrNodoLinea));
+	nuevo->coef = coef;
+	nuevo->sig = *cabeza;
+	*cabeza = nuevo;
+	printf("Agregado correctamente");
+}
+void mostrarLista(ptrNodoLinea cabeza){
+	while(cabeza != NULL){
+		printf("%4d\n", cabeza->coef);
+		printf("%4d\n", cabeza->grado);
+		cabeza = cabeza->sig;
+	}
 }
